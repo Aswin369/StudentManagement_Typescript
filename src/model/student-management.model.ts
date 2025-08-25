@@ -10,7 +10,7 @@ const studentManagmentSchmea = new Schema<StudentMangement>({
         type: Number,
         required: true
     },
-    class:{
+    StudentClass:{
         type:String,
         enum:["class 1","class 2","class 3","class 4",
       "class 5","class 6","class 7","class 8",
@@ -28,4 +28,4 @@ const studentManagmentSchmea = new Schema<StudentMangement>({
     }
 })
 
-export const studenModel = mongoose.model<StudentMangement>("Student", studentManagmentSchmea)
+export const studentModel = mongoose.model<StudentMangement>("Student", studentManagmentSchmea)

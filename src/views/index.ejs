@@ -31,17 +31,10 @@
 
         <!-- Dashboard Tab -->
         <div id="dashboard" class="tab-content active">
-            <div class="search-section">
-                <input type="text" class="search-input" placeholder="Search students by name, roll number, or class...">
-                <button class="btn btn-primary">
-                    <i class="fas fa-search"></i> Search
-                </button>
-            </div>
-
             <div class="stats-grid">
                 <div class="stat-card">
                     <i class="fas fa-users"></i>
-                    <h3>245</h3>
+                    <h3><%=studentData.length%></h3>
                     <p>Total Students</p>
                 </div>
                 <div class="stat-card">
@@ -71,39 +64,39 @@
         <div id="add-student" class="tab-content">
             <div class="form-section">
                 <h3><i class="fas fa-user-plus"></i> Add New Student</h3>
-                <form class="form-grid">
+                <form class="form-grid" id="add-student-form">
                     <div class="form-group">
                         <label for="student-name">Student Name</label>
-                        <input type="text" id="student-name" class="form-control" placeholder="Enter full name" required>
+                        <input type="text" id="student-name" name="studentname" class="form-control" placeholder="Enter full name" >
                     </div>
                     
                     <div class="form-group">
                         <label for="roll-number">Roll Number</label>
-                        <input type="text" id="roll-number" class="form-control" placeholder="Enter roll number" required>
+                        <input type="text" name="rollnumber" id="roll-number" class="form-control" placeholder="Enter roll number" >
                     </div>
                     
                     <div class="form-group">
                         <label for="class">Class</label>
-                        <select id="class" class="form-control" required>
+                        <select id="class" name="classes" class="form-control" >
                             <option value="">Select Class</option>
-                            <option value="1">Class 1</option>
-                            <option value="2">Class 2</option>
-                            <option value="3">Class 3</option>
-                            <option value="4">Class 4</option>
-                            <option value="5">Class 5</option>
-                            <option value="6">Class 6</option>
-                            <option value="7">Class 7</option>
-                            <option value="8">Class 8</option>
-                            <option value="9">Class 9</option>
-                            <option value="10">Class 10</option>
-                            <option value="11">Class 11</option>
-                            <option value="12">Class 12</option>
+                            <option value="class 1">Class 1</option>
+                            <option value="class 2">Class 2</option>
+                            <option value="class 3">Class 3</option>
+                            <option value="class 4">Class 4</option>
+                            <option value="class 5">Class 5</option>
+                            <option value="class 6">Class 6</option>
+                            <option value="class 7">Class 7</option>
+                            <option value="class 8">Class 8</option>
+                            <option value="class 9">Class 9</option>
+                            <option value="class 10">Class 10</option>
+                            <option value="class 11">Class 11</option>
+                            <option value="class 12">Class 12</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
                         <label for="gender">Gender</label>
-                        <select id="gender" class="form-control" required>
+                        <select id="gender" name="gender" class="form-control" >
                             <option value="">Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -113,7 +106,7 @@
                     
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" class="form-control" placeholder="Enter phone number" required>
+                        <input type="tel" name="phonenumber" id="phone" class="form-control" placeholder="Enter phone number" >
                     </div>
                     
                     <div class="form-group" style="align-self: end;">
@@ -148,15 +141,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><span class="student-id">STU001</span></td>
-                            <td>John Doe</td>
-                            <td>2024001</td>
-                            <td><span class="class-badge">Class 10</span></td>
-                            <td><span class="gender-badge gender-male">Male</span></td>
-                            <td>+1234567890</td>
+                        <%studentData.forEach((val,index)=>{%>
+                            <tr>
+                            <td><span class="student-id"><%=index+1%></span></td>
+                            <td><%= val.name%></td>
+                            <td><%= val.rollNumber%></td>
+                            <td><span class="class-badge"><%= val.StudentClass%></span></td>
+                            <td><span class="gender-badge gender-male"><%= val.gender%></span></td>
+                            <td><%= val.phoneNumber%></td>
                             <td class="actions">
-                                <button class="btn btn-edit" onclick="editStudent('STU001')">
+                                <button data-id="<%= val._id %>" class="btn btn-edit" onclick="editStudent('<%=val._id%>')">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
                                 <button class="btn btn-danger">
@@ -164,6 +158,8 @@
                                 </button>
                             </td>
                         </tr>
+                        <%})%>
+                        
                     </tbody>
                 </table>
             </div>
@@ -173,39 +169,39 @@
         <div id="edit-student" class="tab-content">
             <div class="form-section">
                 <h3><i class="fas fa-user-edit"></i> Edit Student Information</h3>
-                <form class="form-grid">
+                <form class="form-grid" id="edit-form">
                     <div class="form-group">
                         <label for="edit-student-name">Student Name</label>
-                        <input type="text" id="edit-student-name" class="form-control" value="John Doe" required>
+                        <input name="editedName" type="text" id="edit-student-name" class="form-control" value="" >
                     </div>
                     
                     <div class="form-group">
                         <label for="edit-roll-number">Roll Number</label>
-                        <input type="text" id="edit-roll-number" class="form-control" value="2024001" required>
+                        <input name="editedRollNumber" type="text" id="edit-roll-number" class="form-control" value="" >
                     </div>
                     
                     <div class="form-group">
                         <label for="edit-class">Class</label>
-                        <select id="edit-class" class="form-control" required>
+                        <select name="editedClass" id="edit-class1" class="form-control" >
                             <option value="">Select Class</option>
-                            <option value="1">Class 1</option>
-                            <option value="2">Class 2</option>
-                            <option value="3">Class 3</option>
-                            <option value="4">Class 4</option>
-                            <option value="5">Class 5</option>
-                            <option value="6">Class 6</option>
-                            <option value="7">Class 7</option>
-                            <option value="8">Class 8</option>
-                            <option value="9">Class 9</option>
-                            <option value="10" selected>Class 10</option>
-                            <option value="11">Class 11</option>
-                            <option value="12">Class 12</option>
+                            <option value="class 1">Class 1</option>
+                            <option value="class 2">Class 2</option>
+                            <option value="class 3">Class 3</option>
+                            <option value="class 4">Class 4</option>
+                            <option value="class 5">Class 5</option>
+                            <option value="class 6">Class 6</option>
+                            <option value="class 7">Class 7</option>
+                            <option value="class 8">Class 8</option>
+                            <option value="class 9">Class 9</option>
+                            <option value="class 10">Class 10</option>
+                            <option value="class 11">Class 11</option>
+                            <option value="class 12">Class 12</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
                         <label for="edit-gender">Gender</label>
-                        <select id="edit-gender" class="form-control" required>
+                        <select name="editedGender" id="edit-gender" class="form-control" >
                             <option value="">Select Gender</option>
                             <option value="male" selected>Male</option>
                             <option value="female">Female</option>
@@ -215,7 +211,7 @@
                     
                     <div class="form-group">
                         <label for="edit-phone">Phone Number</label>
-                        <input type="tel" id="edit-phone" class="form-control" value="+1234567890" required>
+                        <input name="editedPhoneNumber" type="tel" id="edit-phone" class="form-control" value="" >
                     </div>
                     
                     <div class="form-group" style="align-self: end; display: flex; gap: 15px;">
@@ -230,7 +226,138 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/student.action.js"></script>
-    
+    <script>
+
+        document.addEventListener("DOMContentLoaded",function(){
+            const addSubmitButton = document.getElementById("add-student-form")
+            addSubmitButton.addEventListener("submit", async(e)=>{
+            e.preventDefault()
+            console.log("sdfsdf")
+            const formdata = new FormData(e.target)
+            const students = Object.fromEntries(formdata)
+            console.log("THisis sdfasjkdf", students.class)
+            console.log("This is formadata",formdata)
+            console.log("This is students",students)
+            let arr = ["male", "female", "other"]
+            if(!students.studentname || students.studentname.length < 3){
+                return Swal.fire("Validation Error", "Name must be at least 3 character")
+            }
+
+            if(isNaN(students.rollnumber) || Number(students.rollnumber).length <= 0){
+                cosnole.log("This is rolllernumber issu")
+                return Swal.fire("Validation Error", "Rollnumber cannot be empty or Zero or less than zero","error")
+            }
+
+            if(!students.classes){
+                return Swal.fire("Validation Error", "Please provide you class","error")
+            }
+
+              if(!arr.includes(students.gender)){
+                console.log("This calss error")
+                return Swal.fire("Validation error","Please provide a your class", "error")
+            }
+
+            if(!/^\d{10}$/.test(students.phonenumber)){
+                return Swal.fire("Validation Error", "Please  number must be 10 digits","error")
+            }
+          
+
+            
+            console.log(students)
+            try {
+                let res = await fetch("/addstudent",{
+                    method: "POST",
+                    headers:{
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({students})
+                })
+                console.log("This is res succ",res)
+                if(res.ok){
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success!",
+                        text: res.message,
+                        confirmButtonText: "OK"
+                    }).then((result) => {
+                        console.log(result)
+                        if (result.isConfirmed) {
+
+                        window.location.reload();
+                     }
+                });
+                    // location.reload()
+                }else{
+                    Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Failed to add student. Please try again!",
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Server Error",
+                    text: "Something went wrong!",
+                });
+            }
+         })
+
+
+         const editForm = document.getElementById("edit-form")
+         editForm.addEventListener("submit",async (e)=>{
+            e.preventDefault(e)
+            const formData = new FormData(e.target)
+            const studentUpdated = Object.fromEntries(formData)
+            console.log("student updated code",studentUpdated)
+
+            let arr = ["male", "female", "other"]
+            if(!studentUpdated.editedName || studentUpdated.editedName.length < 3){
+                return Swal.fire("Validation Error", "Name must be at least 3 character")
+            }
+
+            if(isNaN(studentUpdated.editedRollNumber) || Number(studentUpdated.editedRollNumber).length <= 0){
+                cosnole.log("This is rolllernumber issu")
+                return Swal.fire("Validation Error", "Rollnumber cannot be empty or Zero or less than zero","error")
+            }
+
+            if(!studentUpdated.editedClass){
+                return Swal.fire("Validation Error", "Please provide you class","error")
+            }
+
+              if(!arr.includes(studentUpdated.editedGender)){
+                console.log("This calss error")
+                return Swal.fire("Validation error","Please provide a your class", "error")
+            }
+
+            if(!/^\d{10}$/.test(studentUpdated.editedPhoneNumber)){
+                return Swal.fire("Validation Error", "Please  number must be 10 digits","error")
+            }
+
+            try {
+                const result = await fetch("/editFrom",{
+                    method:"PUT",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body: JSON.stringify({studentUpdated})
+                })
+
+                if(result.ok){
+                    
+                }
+
+            } catch (error) {
+                
+            }
+
+         })
+
+        })
+
+        
+    </script>
 </body>
 </html>

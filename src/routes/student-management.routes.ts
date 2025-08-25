@@ -5,5 +5,7 @@ const routes = express.Router();
 
 let studentMangementController = new StudentMangementController(new StudentMangementServive());
 
-routes.get("/",studentMangementController.getStudent)
+routes.get("/",studentMangementController.getStudent.bind(studentMangementController))
+routes.post("/addstudent",studentMangementController.addStudent.bind(studentMangementController))
+routes.get("/getEdit/:id",studentMangementController.getEdit.bind(studentMangementController))
 export default routes
