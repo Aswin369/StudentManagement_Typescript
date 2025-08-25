@@ -345,12 +345,35 @@
                     body: JSON.stringify({studentUpdated})
                 })
 
+                console.log("This is result response", result)
                 if(result.ok){
-                    
-                }
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success!",
+                        text: res.message,
+                        confirmButtonText: "OK"
+                    }).then((res) => {
+                        console.log(res)
+                        if (result.isConfirmed) {
 
-            } catch (error) {
+                        window.location.reload();
+                     }
+                });
+                }else{
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Failed to add student. Please try again!",
+                    });
+                }
                 
+            } catch (error) {
+                console.log("THis is error message")
+                 Swal.fire({
+                    icon: "error",
+                    title: "Server Error",
+                    text: "Something went wrong!",
+                });
             }
 
          })

@@ -20,16 +20,31 @@ export class StudentMangementServive {
             gender:student.gender,
             phoneNumber:student.phoneNumber
         })
-        console.log("From service", result);
+        // console.log("From service", result);
         if(!result){
             throw createHttpError(HttpStatus.INTERNAL_SERVER_ERROR,ResponseMessage.SERVER_ERROR)
         }
     }
     
     async getEditdata(id:string):Promise<StudentMangement  | null>{
-        console.log("This is form service",id)
+        // console.log("This is form service",id)
         const studentData = await studentModel.findOne({_id:id})
         return studentData
+    }
+
+    async updateStudent(student:StudentMangement){
+        // console.log("This is from service",student)
+        const result = await studentModel.create({
+            name:student.name,
+            rollNumber: student.rollNumber,
+            StudentClass:student.StudentClass,
+            gender:student.gender,
+            phoneNumber:student.phoneNumber
+        })
+        console.log("This is updated ", result)
+        if(!result){
+            throw createHttpError(HttpStatus.INTERNAL_SERVER_ERROR,ResponseMessage.SERVER_ERROR)
+        }
     }
 
 }

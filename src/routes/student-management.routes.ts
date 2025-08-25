@@ -8,4 +8,5 @@ let studentMangementController = new StudentMangementController(new StudentMange
 routes.get("/",studentMangementController.getStudent.bind(studentMangementController))
 routes.post("/addstudent",studentMangementController.addStudent.bind(studentMangementController))
 routes.get("/getEdit/:id",studentMangementController.getEdit.bind(studentMangementController))
+routes.put("/editFrom", studentMangementController.updateStudent.bind(studentMangementController))
 export default routes

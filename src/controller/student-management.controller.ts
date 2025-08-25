@@ -46,15 +46,15 @@ export class StudentMangementController {
     async getEdit(req:Request, res:Response,next:NextFunction){
         try {
             const id = req.params.id
-            console.log("This. id", id)
+            // console.log("This. id", id)
         if(!id){
-            console.log("This is error")
+            // console.log("This is error")
            throw createHttpError(HttpStatus.BAD_REQUEST, ResponseMessage.BAD_REQUEST)
         }
         const result = await this.studentMangentSerivice.getEditdata(id)
-        console.log("This is from backend",result)
+        // console.log("This is from backend",result)
         if(!result){
-            console.log("This is not foud error block");
+            // console.log("This is not foud error block");
             
             throw createHttpError(HttpStatus.NOT_FOUND, ResponseMessage.NOT_FOUND)
         }
@@ -64,4 +64,24 @@ export class StudentMangementController {
         }
     }
 
+    async updateStudent(req: Request, res: Response, next: NextFunction){
+        try {
+            console.log("This is udpateded data", req.body)
+        const {studentUpdated} = req.body
+        if(!studentUpdated.editedName || !studentUpdated.editedRollNumber || !studentUpdated.editedClass || !studentUpdated.editedGender || !studentUpdated.editedPhoneNumber){
+            throw createHttpError(HttpStatus.BAD_REQUEST, ResponseMessage.BAD_REQUEST)
+        }
+        await this.studentMangentSerivice.updateStudent({
+            name: studentUpdated.editedName,
+            rollNumber:Number(studentUpdated.editedRollNumber),
+            StudentClass: studentUpdated.editedClass,
+            gender:studentUpdated.editedGender,
+            phoneNumber:Number(studentUpdated.editedPhoneNumber)
+        })
+        successResponse(res,HttpStatus.OK, ResponseMessage.CREATED)
+        } catch (error) {
+            next(error)
+        }
+        
+    }
 }
