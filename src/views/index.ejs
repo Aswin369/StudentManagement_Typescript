@@ -153,7 +153,7 @@
                                 <button data-id="<%= val._id %>" class="btn btn-edit" onclick="editStudent('<%=val._id%>')">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
-                                <button class="btn btn-danger">
+                                <button class="btn btn-danger" onclick="deleteStudent('<%=val._id%>')">
                                     <i class="fas fa-trash"></i> Delete
                                 </button>
                             </td>
@@ -173,6 +173,7 @@
                     <div class="form-group">
                         <label for="edit-student-name">Student Name</label>
                         <input name="editedName" type="text" id="edit-student-name" class="form-control" value="" >
+                        <input  type="hidden" id="studentEditId"  value="">
                     </div>
                     
                     <div class="form-group">
@@ -228,159 +229,5 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/student.action.js"></script>
-    <script>
-
-        document.addEventListener("DOMContentLoaded",function(){
-            const addSubmitButton = document.getElementById("add-student-form")
-            addSubmitButton.addEventListener("submit", async(e)=>{
-            e.preventDefault()
-            console.log("sdfsdf")
-            const formdata = new FormData(e.target)
-            const students = Object.fromEntries(formdata)
-            console.log("THisis sdfasjkdf", students.class)
-            console.log("This is formadata",formdata)
-            console.log("This is students",students)
-            let arr = ["male", "female", "other"]
-            if(!students.studentname || students.studentname.length < 3){
-                return Swal.fire("Validation Error", "Name must be at least 3 character")
-            }
-
-            if(isNaN(students.rollnumber) || Number(students.rollnumber).length <= 0){
-                cosnole.log("This is rolllernumber issu")
-                return Swal.fire("Validation Error", "Rollnumber cannot be empty or Zero or less than zero","error")
-            }
-
-            if(!students.classes){
-                return Swal.fire("Validation Error", "Please provide you class","error")
-            }
-
-              if(!arr.includes(students.gender)){
-                console.log("This calss error")
-                return Swal.fire("Validation error","Please provide a your class", "error")
-            }
-
-            if(!/^\d{10}$/.test(students.phonenumber)){
-                return Swal.fire("Validation Error", "Please  number must be 10 digits","error")
-            }
-          
-
-            
-            console.log(students)
-            try {
-                let res = await fetch("/addstudent",{
-                    method: "POST",
-                    headers:{
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({students})
-                })
-                console.log("This is res succ",res)
-                if(res.ok){
-                    Swal.fire({
-                        icon: "success",
-                        title: "Success!",
-                        text: res.message,
-                        confirmButtonText: "OK"
-                    }).then((result) => {
-                        console.log(result)
-                        if (result.isConfirmed) {
-
-                        window.location.reload();
-                     }
-                });
-                    // location.reload()
-                }else{
-                    Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "Failed to add student. Please try again!",
-                    });
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Server Error",
-                    text: "Something went wrong!",
-                });
-            }
-         })
-
-
-         const editForm = document.getElementById("edit-form")
-         editForm.addEventListener("submit",async (e)=>{
-            e.preventDefault(e)
-            const formData = new FormData(e.target)
-            const studentUpdated = Object.fromEntries(formData)
-            console.log("student updated code",studentUpdated)
-
-            let arr = ["male", "female", "other"]
-            if(!studentUpdated.editedName || studentUpdated.editedName.length < 3){
-                return Swal.fire("Validation Error", "Name must be at least 3 character")
-            }
-
-            if(isNaN(studentUpdated.editedRollNumber) || Number(studentUpdated.editedRollNumber).length <= 0){
-                cosnole.log("This is rolllernumber issu")
-                return Swal.fire("Validation Error", "Rollnumber cannot be empty or Zero or less than zero","error")
-            }
-
-            if(!studentUpdated.editedClass){
-                return Swal.fire("Validation Error", "Please provide you class","error")
-            }
-
-              if(!arr.includes(studentUpdated.editedGender)){
-                console.log("This calss error")
-                return Swal.fire("Validation error","Please provide a your class", "error")
-            }
-
-            if(!/^\d{10}$/.test(studentUpdated.editedPhoneNumber)){
-                return Swal.fire("Validation Error", "Please  number must be 10 digits","error")
-            }
-
-            try {
-                const result = await fetch("/editFrom",{
-                    method:"PUT",
-                    headers:{
-                        "Content-Type":"application/json"
-                    },
-                    body: JSON.stringify({studentUpdated})
-                })
-
-                console.log("This is result response", result)
-                if(result.ok){
-                    Swal.fire({
-                        icon: "success",
-                        title: "Success!",
-                        text: res.message,
-                        confirmButtonText: "OK"
-                    }).then((res) => {
-                        console.log(res)
-                        if (result.isConfirmed) {
-
-                        window.location.reload();
-                     }
-                });
-                }else{
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Failed to add student. Please try again!",
-                    });
-                }
-                
-            } catch (error) {
-                console.log("THis is error message")
-                 Swal.fire({
-                    icon: "error",
-                    title: "Server Error",
-                    text: "Something went wrong!",
-                });
-            }
-
-         })
-
-        })
-
-        
-    </script>
 </body>
 </html>

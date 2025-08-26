@@ -9,4 +9,5 @@ routes.get("/",studentMangementController.getStudent.bind(studentMangementContro
 routes.post("/addstudent",studentMangementController.addStudent.bind(studentMangementController))
 routes.get("/getEdit/:id",studentMangementController.getEdit.bind(studentMangementController))
 routes.put("/editFrom", studentMangementController.updateStudent.bind(studentMangementController))
+routes.delete("/deleteStudent/:id",studentMangementController.deletStudent.bind(studentMangementController))
 export default routes

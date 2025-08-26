@@ -23,10 +23,7 @@ export class StudentMangementController {
 
     addStudent= async(req:Request, res:Response,next: NextFunction)=>{
         try{
-        console.log("This is req.body",req.body)
         const {students} = req.body
-            console.log("srusafd", students)
-        // console.log("r and p",rollnumber, phonenumber);
         if(!students.studentname || !students.rollnumber || !students.classes || !students.gender || !students.gender || !students.phonenumber){
             throw createHttpError(HttpStatus.BAD_REQUEST, ResponseMessage.BAD_REQUEST)
         }
@@ -46,16 +43,11 @@ export class StudentMangementController {
     async getEdit(req:Request, res:Response,next:NextFunction){
         try {
             const id = req.params.id
-            // console.log("This. id", id)
         if(!id){
-            // console.log("This is error")
            throw createHttpError(HttpStatus.BAD_REQUEST, ResponseMessage.BAD_REQUEST)
         }
         const result = await this.studentMangentSerivice.getEditdata(id)
-        // console.log("This is from backend",result)
-        if(!result){
-            // console.log("This is not foud error block");
-            
+        if(!result){            
             throw createHttpError(HttpStatus.NOT_FOUND, ResponseMessage.NOT_FOUND)
         }
         successResponse(res,HttpStatus.OK,ResponseMessage.FOUND,result)
@@ -66,9 +58,8 @@ export class StudentMangementController {
 
     async updateStudent(req: Request, res: Response, next: NextFunction){
         try {
-            console.log("This is udpateded data", req.body)
-        const {studentUpdated} = req.body
-        if(!studentUpdated.editedName || !studentUpdated.editedRollNumber || !studentUpdated.editedClass || !studentUpdated.editedGender || !studentUpdated.editedPhoneNumber){
+        const {studentUpdated,studentId} = req.body;
+        if(!studentUpdated.editedName || !studentUpdated.editedRollNumber || !studentUpdated.editedClass || !studentUpdated.editedGender || !studentUpdated.editedPhoneNumber || !studentId){
             throw createHttpError(HttpStatus.BAD_REQUEST, ResponseMessage.BAD_REQUEST)
         }
         await this.studentMangentSerivice.updateStudent({
@@ -77,11 +68,23 @@ export class StudentMangementController {
             StudentClass: studentUpdated.editedClass,
             gender:studentUpdated.editedGender,
             phoneNumber:Number(studentUpdated.editedPhoneNumber)
-        })
-        successResponse(res,HttpStatus.OK, ResponseMessage.CREATED)
+        },studentId)
+        successResponse(res, HttpStatus.OK, "hello this the eroror")
         } catch (error) {
             next(error)
         }
-        
+    }
+
+    async deletStudent(req:Request,res:Response,next:NextFunction){
+        try {
+            const id = req.params.id
+            if(!id){
+                throw createHttpError(HttpStatus.NOT_FOUND,ResponseMessage.NOT_FOUND)
+            }
+            await this.studentMangentSerivice.deleteStudent(id);
+            successResponse(res, HttpStatus.OK,ResponseMessage.DELETED)
+        } catch (error) {
+            next(error)
+        }
     }
 }
